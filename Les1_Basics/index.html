@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/vue@3.0.2"></script>
+    <title>Vue Les1 | Basics</title>
+</head>
+<body>
+    <div id="app">
+        <p>{{ title }} - {{author}} - {{age}}</p>
+        <button v-on:click="age++">Increase age</button>
+        <button v-on:click="age--">Decrease age</button>
+
+        <hr>
+
+        <!-- <div @click="changeTitle">Change book title</div> -->
+        <div @click="changeTitle('Green Light')">Change book title</div>
+
+        <hr>
+
+        <!-- if event -->
+        <div v-if="showBooks">
+            <p>{{title}} --- {{author}}</p>
+        </div>
+        <button @click="toggleShowBooks">
+            <span v-if="showBooks">Hide Books</span>
+            <span v-if="!showBooks">Show Books</span>
+        </button>
+
+        <div v-show="showBooks">Showing some books</div>
+    </div>
+
+
+    <script src="app.js"></script>
+</body>
+</html>

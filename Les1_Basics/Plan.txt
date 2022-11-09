@@ -1,0 +1,80 @@
+Video source:
+https://www.youtube.com/watch?v=F7PLPJqVotk&list=PL4cUxeGkcC9hYYGbV60Vq3IXYNfDk8At1&index=2&ab_channel=TheNetNinja
+
+
+Якщо Vue лише частина сторінки, тоді можна додати скрипт:
+<script src="https://unpkg.com/vue@3.0.2"></script>
+
+
+В html створюємо <div id="app"> (саме він буде компонентом Vue)
+
+
+В app.js ініціюємо Vue:
+
+const app = Vue.createApp({})
+app.mount('#app')               (назва блоку де буде Vue)
+
+
+Створюємо функцію яка міститиме об'єкт з інформацією:
+
+data() {
+        return {
+            title: 'The Final Empire',
+            author: 'John Doe',
+            age: 55
+        }
+    }
+
+Виводимо інформацію з об'єкта в розмітку:
+<p>{{ title }} - {{author}} - {{age}}</p>
+
+
+Застосовуємо JS прямо в розмітці (кнопки для підняття/зменшення age); для ініціалізації використовуємо
+всередині тегу v-on:click="":
+
+<button v-on:click="age++">Increase age</button>
+<button v-on:click="age--">Decrease age</button>
+
+
+Прописуємо методи:
+
+(звертаємось через this до відповідного об'єкта з data (напр this.title); також можна приймати
+інформацію і передавати (this.title = title))
+    methods: {
+        changeTitle(title) {
+            // this.title = 'Elder Rings'
+            this.title = title
+        }
+    }
+
+І передаємо метод на певну подію (замість v-on:click можна використовувати @click):
+
+<div @click="changeTitle('Green Light')">Change book title</div>
+
+
+
+
+
+if події (ми на клік будемо ховати/показувати книгами):
+
+в data() додамо значення:
+showBooks: true
+
+в methods додамо метод:
+toggleShowBooks() {
+    this.showBooks = !this.showBooks
+}
+
+І пропишемо в розмітці:
+<div v-if="showBooks">
+    <p>{{title}} --- {{author}}</p>
+</div>
+<button @click="toggleShowBooks">
+    <span v-if="showBooks">Hide Books</span>
+    <span v-if="!showBooks">Show Books</span>
+</button>
+
+також можна використовувати v-show:
+(v-if створює/викидає елементи з html при перевірці, a v-show працює з css і додає display: block/none)
+
+<div v-show="showBooks">Showing some books</div>
