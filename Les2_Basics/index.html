@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/vue@3.0.2"></script>
+    <link rel="stylesheet" href="style.css">
+    <title>Vue Les2 | Basics</title>
+</head>
+<body>
+    <div id="app">
+
+        <!-- for cicle -->
+        <div v-if="showBooks">
+            <ul>
+                <li v-for="item in books" :class="{ fav: item.isFav }" @click="toggleFav(item)">
+                    <img :src="item.img" :alt="item.title">
+                    <h3>{{ item.title }}</h3>
+                    <p>{{ item.author }}</p>
+                </li>
+            </ul>
+        </div>
+
+
+        <hr>
+
+        <!-- Computed properties (filter) -->
+        <div v-if="filteredBooks" class="chosenBooks">
+            <h3>Chosen books</h3>
+            <ul>
+                <li v-for="book in filteredBooks" >
+                    <img :src="book.img" :alt="book.title">
+                    <h3>{{ book.title }}</h3>
+                    <p>{{ book.author }}</p>
+                </li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <!-- if event -->
+        <div v-if="showBooks">
+        </div>
+        <button @click="toggleShowBooks">
+            <span v-if="showBooks">Hide Books</span>
+            <span v-if="!showBooks">Show Books</span>
+        </button>
+
+        <div v-show="showBooks">Showing some books</div>
+
+        <hr>
+
+        <!-- mouse events -->
+        <div class="box" @mouseover="handleEvent($event, 5)">mouseover (enter)</div>
+        <div class="box" @mouseleave="handleEvent">mouseleave</div>
+        <div class="box" @dblclick="handleEvent">double click</div>
+        <div class="box" @mousemove="handleMousemove">position: {{x}} - {{y}}</div>
+
+        <hr>
+
+        <!-- attribute binding -->
+        <div>
+            <a v-bind:href="url">Facebook</a>
+        </div>
+        <div>
+            <a :href="url">Facebook</a>
+        </div>
+    </div>
+
+
+    <script src="app.js"></script>
+</body>
+</html>
