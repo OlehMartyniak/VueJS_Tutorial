@@ -1,0 +1,68 @@
+Video source: 
+https://www.youtube.com/watch?v=GWRvrSqnFbM&list=PL4cUxeGkcC9hYYGbV60Vq3IXYNfDk8At1&ab_channel=TheNetNinja
+
+
+
+CLI - command line interface
+
+
+
+Щоб загалом мати можливість створювати додатки Vue, потрібно з допомогою npm встановити цей cli :
+npm install -g @vue/cli
+
+
+Тепер можна створювати vue додатки:
+vue create project-name
+
+
+
+Щоб запустити додаток: npm run serve;
+
+
+
+Vue компоненти складаються з 3 основних елементів:
+
+<template></template> - html розмітка компонента
+<script></script> - скрипт компонента
+<style></style> - стилізація компонента
+
+Базовий скрипт:
+
+<script>
+
+export default {
+
+  name: 'App',      <--- назва необовязкова
+  components: {}    <--- компоненти які імпортуються
+  data(){           <--- інформація з якою ми працбємо (об'єкт)
+    return {}
+  },
+  methods: {        <--- методи (функції), які застосовуються в компоненті
+    handleClick() {}
+  }
+}
+
+</script>
+
+
+
+Як і в реакті створюємо компоненти в папці components і називає з великої букви
+Щоб імпортувати їх в App (напр. компонент Modal.vue):
+
+<template>
+    <Modal/>        <--- додаємо в розмітку (3)
+</template>
+
+<script>
+import Modal from "./components/Modal.vue"      <--- імпортуємо компонент в скрипт (1)
+
+export default {
+  name: 'App',
+  components: {Modal},      <--- реєструємо імпортований компонент в поле components (2)
+  data(){}
+  },
+  methods: {
+    handleClick() {}
+  }
+}
+</script>
