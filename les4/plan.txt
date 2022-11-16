@@ -1,0 +1,161 @@
+video source:
+https://www.youtube.com/watch?v=KM1U6DqZf8M&list=PL4cUxeGkcC9hYYGbV60Vq3IXYNfDk8At1&index=5&ab_channel=TheNetNinja
+
+
+
+
+Стилі (styles):
+Якщо потрібно застосувати стиль тільки до конкретного елемента, тоді в його style додаємо scoped:
+(це згенерує для цих стилів [data] атрибут)
+
+<style scoped>
+
+</style>
+
+Можна просто стилізувати тільки елементи які знаходяться в батьківському елементі:
+(якщо батьківському елементу надати class="main", і тоді стилізувати все що в main)
+
+<style>
+    .main h1 {}
+</style>
+
+Якщо ж потрібно створити загальні стилі, то тоді в папці assets створюємо global.css та імпортуємо
+його в main.js (import './assets/global.css')
+
+
+
+
+Пропси (props):
+Як і в React, пропсу передаємо в розмітку parent component і приймаємо в child component:
+
+parent component:
+
+<template>
+    <Modal header="Props header"/>    <--- передаємо props header (1)
+</template>
+
+child component: 
+
+<template>
+    <div class="backdrop">
+        <div class="modal">
+            <h3>{{header}}</h3>     <--- виводимо в розмітку props header (3)
+        </div>
+    </div>
+</template>
+
+<script>
+    export default {
+        props: ["header"],      <--- реєструємо props header (2)
+    }
+</script>
+
+!Однак, якщо потрібно в пропсу передати не стрінгу, а змінну, перед пропсою потрібно поставити ":" :
+
+<template>
+    <Modal header="Props header" :text="text"/>
+</template>
+
+<script>
+import Modal from './components/Modal.vue'
+export default {
+  components: {Modal},
+  data() {
+    return {
+        text: "props text"
+    }
+  }
+}
+</script>
+
+
+
+
+
+Наприклад, можна передавати динамічний клас і поставити умову, якщо він вірний (true) - клас буде 
+застосовуватись:
+
+Передамо з App в Modal theme="sale"
+
+<template>
+    <Modal header="Props header" :text="text" theme="sale"/>
+</template>
+
+В Modal приймемо і встановимо для <div class="modal"></div> ще один динамічний клас
+:class="{sale: theme === 'sale'}" :
+
+<template>
+    <div class="backdrop">
+        <div class="modal" :class="{sale: theme === 'sale'}">
+            <h3>{{header}}</h3>
+            <p>{{text}}</p>
+        </div>
+    </div>
+</template>
+
+export default {
+    props: ["header","text","theme"],
+}
+
+І в css пропишемо умову якщо буде застосовано клас "sale":
+
+.modal.sale {
+    background: steelblue;
+    color: white;
+}
+
+
+
+
+Створимо вспливаюче модальне вікно при кліку (наш Modal):
+
+
+- в розмітку додаємо умову і кнопку, яка запускатиме модальне вікно:
+
+<div v-if="showModal">      <--- умова (повинно бути true)
+    <Modal :header="header" :text="text" theme="sale" @close="toggleModal"/>
+</div>
+<button @click="toggleModal">open modal</button>        <--- кнопка
+        ---------------------
+
+- додаємо в скрипт метод, для виконання умови:
+
+data() {
+  return {
+      text: "props text",
+      header: "Props header",
+      showModal: false          <--- умова, за замовчуванням false (модальне вікно не відображається)
+  }
+},
+methods: {
+  toggleModal() {
+      this.showModal = !this.showModal      <--- функція для зміни умови
+  }
+}
+
+
+
+
+Тепер, коли модальне вікно виводиться, нам потрібно його закривати при кліку на поле за ним (решта
+екрану); для цього потрібно отримати доступ до <div class="backdrop"></div>, який знаходиться в 
+компоненті Modal; для цього потрібно передати інформацію з дочірнього компонента в батьківському;
+для реалізації цього використовують $emit :
+
+- при кліку на це поле викличемо функцію closeModal в компоненті Modal:
+
+<div class="backdrop" @click="closeModal">
+                      -------------------
+
+- пропишемо метод closeModal, який передаватиме в батьківський компонент як пропсу "close" :
+
+methods: {
+    closeModal() {
+        this.$emit("close")
+    }
+}
+
+- в батьківському компоненті приймемо її і передамо функцію toggleModal; тобто тепер при кліку на 
+<div class="backdrop" @click="closeModal"> ми викликатимемо функцію toggleModal :
+
+<Modal :header="header" :text="text" theme="sale" @close="toggleModal"/>
+                                                  ---------------------
